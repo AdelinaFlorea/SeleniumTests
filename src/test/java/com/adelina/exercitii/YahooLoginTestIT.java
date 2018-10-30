@@ -4,13 +4,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static java.lang.Thread.sleep;
+
 public class YahooLoginTestIT {
 
+    WebDriver driver;
 
     @BeforeMethod
     public void setUp() {
@@ -32,27 +37,9 @@ public class YahooLoginTestIT {
         // First param is the actual value.
         // Second param is the expected value.
         Assert.assertEquals(a, 4);
-        Assert.assertTrue(a==4);
+        Assert.assertTrue(a == 4);
 
 //        Assert.assertFalse(a==4);
-    }
-
-    @Test
-    public void demoTest2() {
-
-        String message = "This is my awesome message";
-
-        // Asserts that a condition is true.
-        // If it isn't, an AssertionError is thrown.
-        //message.contains("awesome")
-        boolean x;
-
-        x = false;
-
-//        Assert.assertTrue(x);
-        Assert.assertEquals(x,true);
-        //Assert.assertNotEquals(x, true);
-        System.out.println("Testul a trecut");
     }
 
     @Test
@@ -62,31 +49,49 @@ public class YahooLoginTestIT {
 
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.google.com/xhtml");
-        Thread.sleep(5000);  // Let the user actually see something!
+        sleep(5000);  // Let the user actually see something!
         WebElement searchBox = driver.findElement(By.name("q"));
         searchBox.sendKeys("ChromeDriver");
         searchBox.submit();
-        Thread.sleep(5000);  // Let the user actually see something!
+        sleep(5000);  // Let the user actually see something!
         driver.quit();
     }
 
     @Test
     public void testYahooMail() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.get("https://login.yahoo.com/?.src=fpctx&.intl=ro&.lang=ro-RO&authMechanism=primary&done=https%3A%2F%2Fro.yahoo.com%2F&eid=100&add=1");
-    Thread.sleep(1000);
-    WebElement loginBox = driver.findElement(By.id("login-username"));
-    loginBox.sendKeys("adelina_selenium_test@yahoo.com");
-    WebElement loginButton = driver.findElement(By.id("login-signin"));
-    loginButton.click();
-    Thread.sleep(1000);
-    WebElement passwordBox = driver.findElement(By.id("login-passwd"));
-    passwordBox.sendKeys("AdelinaSelenium7");
-    WebElement authButton = driver.findElement(By.id("login-signin"));
-    authButton.click();
-    WebElement mailIcon = driver.findElement(By.id ("uh-mail-link"));
-    mailIcon.click();
-    Thread.sleep(5000);
-    driver.get("https://login.yahoo.com/account/logout?logout_all=1&.direct=2&crumb=fHUWlFobPTu&.done=https%3A%2F%2Fro.yahoo.com%2F");
+        sleep(1000);
+        WebElement loginBox = driver.findElement(By.id("login-username"));
+        loginBox.sendKeys("adelina_selenium_test@yahoo.com");
+        WebElement loginButton = driver.findElement(By.id("login-signin"));
+        loginButton.click();
+        sleep(1000);
+        WebElement passwordBox = driver.findElement(By.id("login-passwd"));
+        passwordBox.sendKeys("AdelinaSelenium7");
+        WebElement authButton = driver.findElement(By.id("login-signin"));
+        authButton.click();
+        WebElement mailIcon = driver.findElement(By.id("uh-mail-link"));
+        mailIcon.click();
+        sleep(5000);
+        driver.get("https://login.yahoo.com/account/logout?logout_all=1&.direct=2&crumb=fHUWlFobPTu&.done=https%3A%2F%2Fro.yahoo.com%2F");
+
+    }
+
+    @AfterClass
+    public void closingTests() {
+        driver.close();
+    }
+
+
+    @Test
+    public void testStartMaximize() throws InterruptedException {
+        driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized");
+        driver = new ChromeDriver(options);
+        Thread.sleep(3000);
     }
 }
+
